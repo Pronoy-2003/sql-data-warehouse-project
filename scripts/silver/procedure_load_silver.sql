@@ -295,7 +295,7 @@ BEGIN
 
 
 
-      PRINT '------------------------------------------------';
+        PRINT '------------------------------------------------';
 	    PRINT 'Loading Inventory Tables';
 	    PRINT '------------------------------------------------';
 
@@ -504,32 +504,57 @@ BEGIN
             VendorStatus
         )
         SELECT
-            v.BusinessEntityID,
-            v.Name,
-            v.AccountNumber,
-            v.CreditRating,
-            v.PreferredVendorStatus,
-            v.ActiveFlag,
-            pv.ProductID,
-            pv.AverageLeadTime,
-            pv.StandardPrice,
-            pv.LastReceiptCost,
-            pv.LastReceiptDate,
-            pv.MinOrderQty,
-            pv.MaxOrderQty,
-            pv.OnOrderQty,
-            CASE
-                WHEN pv.AverageLeadTime <= 7 THEN 'Fast'
-                WHEN pv.AverageLeadTime <= 20 THEN 'Medium'
-                ELSE 'Slow'
-            END AS LeadTimeCategory,
-            CASE
-                WHEN v.ActiveFlag = 1 THEN 'Active'
-                ELSE 'Inactive'
-            END AS VendorStatus
-        FROM bronze.Vendor v
-        INNER JOIN bronze.ProductVendor pv
-            ON v.BusinessEntityID = pv.BusinessEntityID;
+            VendorID,
+            VendorName,
+            AccountNumber,
+            CreditRating,
+            PreferredVendorStatus,
+            ActiveFlag,
+            ProductID,
+            AverageLeadTime,
+            StandardPrice,
+            LastReceiptCost,
+            LastReceiptDate,
+            MinOrderQty,
+            MaxOrderQty,
+            OnOrderQty,
+            LeadTimeCategory,
+            VendorStatus
+        FROM
+        (
+            SELECT
+                v.BusinessEntityID     AS VendorID,
+                v.Name                 AS VendorName,
+                v.AccountNumber,
+                v.CreditRating,
+                v.PreferredVendorStatus,
+                v.ActiveFlag,
+                pv.ProductID,
+                pv.AverageLeadTime,
+                pv.StandardPrice,
+                pv.LastReceiptCost,
+                pv.LastReceiptDate,
+                pv.MinOrderQty,
+                pv.MaxOrderQty,
+                pv.OnOrderQty,
+                CASE
+                    WHEN pv.AverageLeadTime <= 7 THEN 'Fast'
+                    WHEN pv.AverageLeadTime <= 20 THEN 'Medium'
+                    ELSE 'Slow'
+                END AS LeadTimeCategory,
+                CASE
+                    WHEN v.ActiveFlag = 1 THEN 'Active'
+                    ELSE 'Inactive'
+                END AS VendorStatus,
+                ROW_NUMBER() OVER (
+                    PARTITION BY v.BusinessEntityID
+                    ORDER BY pv.LastReceiptDate DESC, pv.StandardPrice ASC
+                ) AS rn
+            FROM bronze.Vendor v
+            INNER JOIN bronze.ProductVendor pv
+                ON v.BusinessEntityID = pv.BusinessEntityID
+        ) AS ranked
+        WHERE rn = 1;
         SET @end_time = GETDATE();
         PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
         PRINT '>> -------------';
@@ -544,6 +569,32 @@ BEGIN
 	    PRINT '>> Truncating Table: silver.Employee';
         TRUNCATE TABLE silver.Employee;
         PRINT '>> Inserting Data Into: silver.Employee';
+
+        ;WITH LatestDeptHistory AS
+        (
+            SELECT
+                BusinessEntityID,
+                DepartmentID,
+                ShiftID,
+                ROW_NUMBER() OVER (
+                    PARTITION BY BusinessEntityID
+                    ORDER BY StartDate DESC, EndDate DESC
+                ) AS rn
+            FROM bronze.EmployeeDepartmentHistory
+        ),
+        LatestPayHistory AS
+        (
+            SELECT
+                BusinessEntityID,
+                Rate,
+                PayFrequency,
+                ROW_NUMBER() OVER (
+                    PARTITION BY BusinessEntityID
+                    ORDER BY RateChangeDate DESC
+                ) AS rn
+            FROM bronze.EmployeePayHistory
+        )
+
         INSERT INTO silver.Employee
         (
             EmployeeID,
@@ -575,7 +626,7 @@ BEGIN
             p.FirstName,
             p.MiddleName,
             p.LastName,
-            CONCAT(p.FirstName,' ',COALESCE(p.MiddleName+' ',''),p.LastName),
+            CONCAT(p.FirstName, ' ', COALESCE(p.MiddleName + ' ', ''), p.LastName),
             e.JobTitle,
             d.DepartmentID,
             d.Name,
@@ -590,35 +641,37 @@ BEGIN
             e.VacationHours,
             e.SickLeaveHours,
             e.CurrentFlag,
-            DATEDIFF(YEAR,e.BirthDate,GETDATE()),
-            DATEDIFF(YEAR,e.HireDate,GETDATE()),
+            DATEDIFF(YEAR, e.BirthDate, GETDATE()),
+            DATEDIFF(YEAR, e.HireDate, GETDATE()),
             CASE
                 WHEN eph.Rate < 30 THEN 'Low'
                 WHEN eph.Rate < 60 THEN 'Medium'
                 ELSE 'High'
             END,
             CASE
-                WHEN e.CurrentFlag=1 THEN 'Active'
+                WHEN e.CurrentFlag = 1 THEN 'Active'
                 ELSE 'Inactive'
             END
         FROM bronze.Employee e
         LEFT JOIN bronze.Person p
-        ON e.BusinessEntityID=p.BusinessEntityID
-        LEFT JOIN bronze.EmployeeDepartmentHistory edh
-        ON e.BusinessEntityID=edh.BusinessEntityID
+            ON e.BusinessEntityID = p.BusinessEntityID
+        LEFT JOIN LatestDeptHistory edh
+            ON e.BusinessEntityID = edh.BusinessEntityID
+            AND edh.rn = 1
         LEFT JOIN bronze.Department d
-        ON edh.DepartmentID=d.DepartmentID
+            ON edh.DepartmentID = d.DepartmentID
         LEFT JOIN bronze.ShifT s
-        ON edh.ShiftID=s.ShiftID
-        LEFT JOIN bronze.EmployeePayHistory eph
-        ON e.BusinessEntityID=eph.BusinessEntityID;
+            ON edh.ShiftID = s.ShiftID
+        LEFT JOIN LatestPayHistory eph
+            ON e.BusinessEntityID = eph.BusinessEntityID
+        AND eph.rn = 1;
         SET @end_time = GETDATE();
         PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
         PRINT '>> -------------';
 
 
 
-      PRINT '------------------------------------------------';
+        PRINT '------------------------------------------------';
 	    PRINT 'Loading SalesTerritory Tables';
 	    PRINT '------------------------------------------------';
 
@@ -668,6 +721,34 @@ BEGIN
 	    PRINT '>> Truncating Table: silver.Promotion';
         TRUNCATE TABLE silver.Promotion;
         PRINT '>> Inserting Data Into: silver.Promotion';
+
+        ;WITH Ranked AS
+        (
+            SELECT
+                so.SpecialOfferID,
+                sop.ProductID,
+                so.Description,
+                so.DiscountPct,
+                so.Type,
+                so.Category,
+                so.StartDate,
+                so.EndDate,
+                so.MinQty,
+                so.MaxQty,
+                CASE
+                    WHEN GETDATE() BETWEEN so.StartDate AND so.EndDate
+                        THEN 'Active'
+                    ELSE 'Expired'
+                END AS PromotionStatus,
+                DATEDIFF(DAY, so.StartDate, so.EndDate) AS PromotionDuration,
+                ROW_NUMBER() OVER (
+                    PARTITION BY so.SpecialOfferID
+                    ORDER BY sop.ProductID ASC
+                ) AS rn
+            FROM bronze.SpecialOffer so
+            INNER JOIN bronze.SpecialOfferProduct sop
+                ON so.SpecialOfferID = sop.SpecialOfferID
+        )
         INSERT INTO silver.Promotion
         (
             SpecialOfferID,
@@ -684,25 +765,20 @@ BEGIN
             PromotionDuration
         )
         SELECT
-            so.SpecialOfferID,
-            sop.ProductID,
-            so.Description,
-            so.DiscountPct,
-            so.Type,
-            so.Category,
-            so.StartDate,
-            so.EndDate,
-            so.MinQty,
-            so.MaxQty,
-            CASE
-                WHEN GETDATE() BETWEEN so.StartDate AND so.EndDate
-                    THEN 'Active'
-                ELSE 'Expired'
-            END AS PromotionStatus,
-            DATEDIFF(DAY, so.StartDate, so.EndDate) AS PromotionDuration
-        FROM bronze.SpecialOffer so
-        INNER JOIN bronze.SpecialOfferProduct sop
-            ON so.SpecialOfferID = sop.SpecialOfferID;
+            SpecialOfferID,
+            ProductID,
+            Description,
+            DiscountPct,
+            Type,
+            Category,
+            StartDate,
+            EndDate,
+            MinQty,
+            MaxQty,
+            PromotionStatus,
+            PromotionDuration
+        FROM Ranked
+        WHERE rn = 1;
         SET @end_time = GETDATE();
         PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
         PRINT '>> -------------';
@@ -717,4 +793,8 @@ BEGIN
 	    PRINT '=========================================='
     END CATCH
 END
+
+
+
+
 
