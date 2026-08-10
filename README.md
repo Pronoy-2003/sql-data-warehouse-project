@@ -17,7 +17,8 @@ business analysis and reporting.
 ## 🏗️ Data Architecture
 
 The data architecture for this project follows Medallion Architecture
-**Bronze**, **Silver**, and **Gold** layers.
+**Bronze**, **Silver**, and **Gold** layers:
+![Data Architecture](docs/data_warehouse_architecture.png)
 
 <!-- Add your data architecture diagram and detailed explanation here -->
 
