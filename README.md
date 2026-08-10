@@ -359,6 +359,7 @@ The Silver layer testing script is available at:
 
 ```text
 tests/quality_checks_silver.sql
+```
 
 ## Gold Layer Testing
 The Gold layer quality checks focus on validating the business-ready
