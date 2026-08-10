@@ -301,3 +301,62 @@ gold.fact_sales
 gold.fact_purchase
 gold.fact_inventory
 ```
+
+---
+
+## 📂 Repository Structure
+
+```text
+sql-data-warehouse-project/
+│
+├── datasets/                                      # Dataset information
+│   └── README.md                                  # AdventureWorks2025 dataset and download instructions
+│
+├── docs/                                          # Project documentation and analysis
+│   ├── business_insights.md                       # Business insights and recommendations
+│   ├── data_catalog.md                            # Data catalog and business descriptions
+│   ├── data_flow.png                              # Data flow diagram
+│   ├── data_model_1.png                           # Sales Data Mart model
+│   ├── data_model_2.png                           # Customer Data Mart model
+│   ├── data_model_3.png                           # Product & Inventory Data Mart model
+│   ├── data_model_4.png                           # Purchase Data Mart model
+│   ├── data_model_5.png                           # HR Data Mart model
+│   ├── data_warehouse_architecture.png            # Data warehouse architecture
+│   ├── eda.md                                     # Exploratory Data Analysis and findings
+│   └── naming_conventions.md                      # Naming conventions used in the project
+│
+├── powerbi/                                       # Power BI Business Intelligence report
+│   ├── AdventureWorks_BI_Report.pbix              # Final Power BI report
+│   └── images/                                    # Power BI dashboard screenshots
+│       ├── home.png                               # Home page
+│       ├── executive_dashboard.png                # Executive Dashboard
+│       ├── sales_dashboard.png                   # Sales Dashboard
+│       ├── customer_dashboard.png                # Customer Dashboard
+│       ├── product_inventory_dashboard.png       # Product & Inventory Dashboard
+│       ├── procurement_dashboard.png              # Procurement Dashboard
+│       └── hr_dashboard.png                      # HR Dashboard
+│
+├── scripts/                                       # SQL Server data warehouse scripts
+│   ├── init_database.sql                          # Initializes the Data Warehouse database and schemas
+│   │
+│   ├── bronze/                                    # Bronze layer scripts
+│   │   ├── ddl_bronze.sql                         # Creates Bronze layer tables
+│   │   └── procedure_load_bronze.sql              # Loads source data into Bronze layer
+│   │
+│   ├── silver/                                    # Silver layer scripts
+│   │   ├── ddl_silver.sql                         # Creates Silver layer tables
+│   │   └── procedure_load_silver.sql              # Cleans, transforms, and loads Silver data
+│   │
+│   ├── gold/                                      # Gold layer scripts
+│   │   └── ddl_gold.sql                            # Creates Gold dimension and fact views
+│   │
+│   └── analysis/                                  # SQL-based analytics
+│       └── exploratory_data_analysis.sql          # Exploratory Data Analysis queries
+│
+├── tests/                                         # Data quality and validation scripts
+│   ├── quality_checks_gold.sql                    # Gold layer quality checks
+│   └── quality_checks_silver.sql                  # Silver layer quality checks
+│
+├── README.md                                      # Project overview and documentation
+└── LICENSE                                        # Repository license
+```
