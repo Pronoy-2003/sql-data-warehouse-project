@@ -360,6 +360,7 @@ sql-data-warehouse-project/
 ├── README.md                                      # Project overview and documentation
 └── LICENSE                                        # Repository license
 ```
+---
 
 ## 🛡️ License
 
