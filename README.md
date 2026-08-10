@@ -251,13 +251,28 @@ The project creates the following major Silver entities:
 
 # 🥇 Gold Layer
 
-The Gold Layer contains business-ready analytical views designed for
-reporting and business intelligence.
+The Gold Layer contains **business-ready analytical views** designed for
+reporting, business intelligence, and analytical queries.
 
 The Gold layer follows a **Star Schema** approach consisting of dimension
-and fact views.
+and fact views. Dimension views provide descriptive business attributes,
+while fact views contain transactional data and business measures.
 
 ## Gold Dimension Views
+
+The Gold layer contains the following dimension views:
+
+| Dimension View             | Business Purpose                                                                                                    |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `gold.dim_customer`        | Contains customer information, customer type, contact details, store information, and customer attributes.          |
+| `gold.dim_product`         | Contains product information, product categories, pricing, cost, product status, and product attributes.            |
+| `gold.dim_employee`        | Contains employee information, department, shift, employment details, compensation, and workforce attributes.       |
+| `gold.dim_vendor`          | Contains supplier information, vendor status, credit rating, pricing, lead time, and vendor performance attributes. |
+| `gold.dim_location`        | Contains address, city, state, country, postal code, territory, and geographic information.                         |
+| `gold.dim_sales_territory` | Contains sales territory information, regional sales performance, costs, profit, and growth metrics.                |
+| `gold.dim_promotion`       | Contains promotion details, discounts, promotion type, category, validity period, and promotion status.             |
+
+### Gold Dimension Views
 
 ```text
 gold.dim_customer
@@ -267,11 +282,22 @@ gold.dim_vendor
 gold.dim_location
 gold.dim_sales_territory
 gold.dim_promotion
+```
 
---- 
 ## Gold Fact Views
+
+The Gold layer contains the following fact views:
+
+| Fact View              | Business Purpose                                                                                                      |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `gold.fact_sales`      | Contains sales transactions, order quantities, prices, discounts, revenue, shipping information, and sales measures. |
+| `gold.fact_purchase`   | Contains purchase transactions, quantities, costs, receiving information, delivery performance, and procurement measures. |
+| `gold.fact_inventory`  | Contains inventory transactions, product quantities, costs, inventory value, inventory age, and stock status.        |
+
+### Gold Fact Views
 
 ```text
 gold.fact_sales
 gold.fact_purchase
 gold.fact_inventory
+```
