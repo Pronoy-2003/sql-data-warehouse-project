@@ -267,3 +267,10 @@ gold.dim_vendor
 gold.dim_location
 gold.dim_sales_territory
 gold.dim_promotion
+
+## Gold Fact Views
+
+```text
+gold.fact_sales
+gold.fact_purchase
+gold.fact_inventory
