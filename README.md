@@ -14,7 +14,7 @@ business analysis and reporting.
 
 ---
 
-## 🏗️ Data Architecture
+# 🏗️ Data Architecture
 
 The data architecture for this project follows Medallion Architecture
 **Bronze**, **Silver**, and **Gold** layers:
@@ -27,7 +27,7 @@ The data architecture for this project follows Medallion Architecture
 
 ---
 
-## 📖 Project Overview
+# 📖 Project Overview
 
 This project involves:
 
@@ -80,7 +80,7 @@ This project involves:
 
 ---
 
-## 🎯 Business Problem
+# 🎯 Business Problem
 
 The AdventureWorks2025 OLTP database contains operational data distributed
 across multiple normalized tables.
@@ -91,7 +91,7 @@ not optimized for analytical reporting and business decision-making.
 The objective of this project is to build a centralized analytical data
 warehouse that allows business stakeholders to analyze:
 
-### Sales
+## Sales
 
 - Sales performance over time
 - Revenue by product and category
@@ -99,7 +99,7 @@ warehouse that allows business stakeholders to analyze:
 - Top-performing customers
 - Online versus non-online sales
 
-### Customer
+## Customer
 
 - Customer base and segmentation
 - Customer distribution by territory
@@ -107,7 +107,7 @@ warehouse that allows business stakeholders to analyze:
 - High-value customers
 - Customer purchasing behavior
 
-### Product & Inventory
+## Product & Inventory
 
 - Product performance
 - Product category performance
@@ -116,7 +116,7 @@ warehouse that allows business stakeholders to analyze:
 - Inventory movement
 - Aging inventory
 
-### Procurement
+## Procurement
 
 - Procurement spending
 - Procurement trends
@@ -125,7 +125,7 @@ warehouse that allows business stakeholders to analyze:
 - Supplier rejection rates
 - Preferred vendor usage
 
-### Human Resources
+## Human Resources
 
 - Workforce distribution
 - Department composition
@@ -136,7 +136,7 @@ warehouse that allows business stakeholders to analyze:
 
 ---
 
-## 📊 Project Scope
+# 📊 Project Scope
 
 The project uses data from the **AdventureWorks2025 OLTP database** and
 covers five major business domains:
@@ -149,7 +149,7 @@ covers five major business domains:
 
 The source database contains data from the following major areas:
 
-### Sales
+## Sales
 
 - Sales Orders
 - Customers
@@ -157,7 +157,7 @@ The source database contains data from the following major areas:
 - Promotions
 - Stores
 
-### Person
+## Person
 
 - Persons
 - Addresses
@@ -166,7 +166,7 @@ The source database contains data from the following major areas:
 - Email Addresses
 - Phone Numbers
 
-### Production
+## Production
 
 - Products
 - Product Categories
@@ -177,14 +177,14 @@ The source database contains data from the following major areas:
 - Product Cost History
 - Product List Price History
 
-### Purchasing
+## Purchasing
 
 - Purchase Orders
 - Vendors
 - Product Vendors
 - Ship Methods
 
-### Human Resources
+## Human Resources
 
 - Employees
 - Departments
