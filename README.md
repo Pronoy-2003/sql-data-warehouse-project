@@ -718,71 +718,66 @@ The Power BI report contains the following dashboards:
 
 ### 🏠 Home
 
-<br><br>
-
 ![Home Dashboard](powerbi/images/home.png)
 
-<br><br><br>
+
 
 ---
 
 ### 📊 Executive Dashboard
 
-<br><br>
+
 
 ![Executive Dashboard](powerbi/images/executive_dashboard.png)
 
-<br><br><br>
 
 ---
 
 ### 💰 Sales Dashboard
 
-<br><br>
+
 
 ![Sales Dashboard](powerbi/images/sales_dashboard.png)
 
-<br><br><br>
+
 
 ---
 
 ### 👥 Customer Dashboard
 
-<br><br>
+
 
 ![Customer Dashboard](powerbi/images/customer_dashboard.png)
 
-<br><br><br>
 
 ---
 
 ### 📦 Product & Inventory Dashboard
 
-<br><br>
+
 
 ![Product & Inventory Dashboard](powerbi/images/product_inventory_dashboard.png)
 
-<br><br><br>
+
 
 ---
 
 ### 🛒 Procurement Dashboard
 
-<br><br>
+
 
 ![Procurement Dashboard](powerbi/images/procurement_dashboard.png)
 
-<br><br><br>
+
 
 ---
 
 ### 👨‍💼 HR Dashboard
 
-<br><br>
+
 
 ![HR Dashboard](powerbi/images/hr_dashboard.png)
 
-<br><br><br>
 
 ---
 
