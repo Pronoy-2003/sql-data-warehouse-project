@@ -304,7 +304,415 @@ gold.fact_inventory
 
 ---
 
-## 📂 Repository Structure
+# 🔄 ETL / Data Loading
+
+The project uses **SQL Server and T-SQL** to load, clean, transform, and
+integrate data through the Bronze, Silver, and Gold layers.
+
+The overall data flow is:
+
+```text
+AdventureWorks2025
+        |
+        v
+   Bronze Layer
+        |
+        v
+   Silver Layer
+        |
+        v
+    Gold Layer
+        |
+        v
+ SQL Analytics / EDA
+        |
+        v
+    Power BI
+```
+---
+
+# 🧪 Data Quality & Testing
+
+Data quality testing was performed on the **Silver and Gold layers** to
+ensure that the transformed and business-ready data is reliable and
+suitable for analytical reporting.
+
+The testing process validates the quality and consistency of data before it
+is used for Exploratory Data Analysis and Power BI reporting.
+
+## Silver Layer Testing
+
+The Silver layer quality checks focus on validating the cleaned and
+transformed business entities.
+
+The checks include:
+
+- Row count validation
+- NULL value checks
+- Duplicate record checks
+- Business key validation
+- Data consistency checks
+- Invalid value checks
+- Data completeness checks
+
+The Silver layer testing script is available at:
+
+```text
+tests/quality_checks_silver.sql
+
+## Gold Layer Testing
+The Gold layer quality checks focus on validating the business-ready
+dimension and fact views used for analytics and reporting.
+
+The checks include:
+
+- Row count validation
+- NULL value checks
+- Duplicate record checks
+- Dimension key validation
+- Fact data validation
+- Referential integrity checks
+- Business key validation
+- Data consistency checks
+- Fact and dimension relationship checks
+
+The Gold layer testing script is available at:
+
+```text
+tests/quality_checks_gold.sql
+```
+---
+
+# 🔍 Exploratory Data Analysis
+
+Exploratory Data Analysis (EDA) was performed using **SQL Server** on the
+business-ready Gold layer to understand business performance, identify
+important trends and patterns, and determine the KPIs required for the
+Power BI dashboards.
+
+The analysis covers five major business domains:
+
+## 1. Sales Analytics
+
+The Sales EDA analyzes:
+
+- Sales revenue and sales trends
+- Total orders and units sold
+- Sales performance by year and month
+- Top-performing products
+- Top-performing customers
+- Sales performance by territory
+- Online vs non-online sales
+- Discounts and profitability
+- Shipping performance
+
+The analysis helps identify major revenue drivers, high-performing products
+and customers, regional performance, and sales trends.
+
+---
+
+## 2. Customer Analytics
+
+The Customer EDA analyzes:
+
+- Total customer base
+- Customer type distribution
+- Customers by sales territory
+- Top customers by revenue
+- Low-value customers
+- Average revenue per customer
+- Average orders per customer
+- Average order value by customer type
+- Customer revenue by territory
+- Customer purchase quantity
+- Customer discount behavior
+- Online vs offline customers
+
+The analysis helps identify high-value customers, customer segments,
+purchasing behavior, and regional customer contribution.
+
+---
+
+## 3. Product & Inventory Analytics
+
+The Product & Inventory EDA analyzes:
+
+- Product catalog
+- Product categories and subcategories
+- Product pricing and cost
+- Product profitability
+- Product sales performance
+- Inventory quantity
+- Inventory value
+- Stock status
+- Inventory aging
+- Inventory movement
+- High-performing and low-performing products
+
+The analysis helps identify important products, profitable product
+categories, inventory levels, and potential inventory optimization
+opportunities.
+
+---
+
+## 4. Procurement Analytics
+
+The Procurement EDA analyzes:
+
+- Total procurement cost
+- Purchase orders
+- Purchased quantity
+- Procurement trends
+- Procurement cost by vendor
+- Procurement cost by product category
+- Top purchased products
+- Vendor lead time
+- Vendor credit ratings
+- Preferred vendors
+- Delivery performance
+- Receiving performance
+- Vendor rejection rates
+- Employee procurement performance
+- Procurement by department
+- Vendor status
+
+The analysis helps evaluate supplier performance, procurement spending,
+delivery efficiency, receiving quality, and potential supplier risks.
+
+---
+
+## 5. HR Analytics
+
+The HR EDA analyzes:
+
+- Total employees
+- Employee distribution by department
+- Employee distribution by gender
+- Employee age distribution
+- Employee experience
+- Salary bands
+- Job titles
+- Shift distribution
+- Hiring trends
+- Employment status
+- Workforce characteristics
+
+The analysis helps understand workforce composition, employee distribution,
+salary structure, and hiring patterns.
+
+---
+
+## 📊 EDA Outcomes
+
+The EDA was used to identify:
+
+- Key business KPIs
+- Important business dimensions
+- Revenue and cost drivers
+- Customer segments
+- Product performance indicators
+- Inventory performance indicators
+- Vendor performance indicators
+- Workforce metrics
+- Business trends and patterns
+
+The findings from the EDA were then used to design the Power BI dashboards
+and determine the KPIs and visualizations required for each business domain.
+
+### EDA SQL Script
+
+The complete SQL-based EDA script is available at:
+
+```text
+scripts/analysis/exploratory_data_analysis.sql
+```
+### EDA Documentation
+
+The documented EDA results and findings are available at:
+
+```text
+docs/eda.md
+```
+
+---
+
+# 📊 Power BI Report
+
+The final Business Intelligence solution was developed using **Microsoft
+Power BI** to provide interactive dashboards for business stakeholders.
+
+The report contains **7 pages**, covering the major business areas of the
+Data Warehouse:
+
+1. **Home** – Provides navigation to the different dashboards and introduces
+   the project.
+
+2. **Executive Dashboard** – Provides a high-level overview of overall
+   business performance using key business KPIs.
+
+3. **Sales Dashboard** – Analyzes revenue, orders, products, customers,
+   territories, and sales channels.
+
+4. **Customer Dashboard** – Analyzes customer segments, customer value,
+   customer distribution, and purchasing behavior.
+
+5. **Product & Inventory Dashboard** – Analyzes product performance,
+   inventory value, stock status, inventory quantity, and inventory aging.
+
+6. **Procurement Dashboard** – Analyzes procurement spending, vendors,
+   purchasing trends, delivery performance, and supplier quality.
+
+7. **HR Dashboard** – Analyzes employee distribution, departments, salary
+   bands, workforce characteristics, and hiring trends.
+
+The report uses the **Gold layer of the SQL Server Data Warehouse** as the
+primary reporting source.
+
+### Power BI Report File
+
+```text
+powerbi/
+└── AdventureWorks_BI_Report.pbix
+```
+
+---
+# 🛠️ Technologies Used
+
+| Technology | Purpose |
+|---|---|
+| **Microsoft SQL Server** | Data Warehouse and database platform |
+| **T-SQL** | Data loading, transformation, testing, and analysis |
+| **AdventureWorks2025** | Source OLTP database |
+| **Microsoft Power BI** | Business Intelligence and dashboard development |
+| **DAX** | Power BI measures and calculations |
+| **Draw.io** | Data Warehouse architecture, data flow, and data model documentation |
+| **Git & GitHub** | Version control and project management |
+
+---
+
+# 🚀 How to Run the Project
+
+Follow the steps below to set up the AdventureWorks Data Warehouse and
+Power BI report.
+
+## Step 1 — Download AdventureWorks2025
+
+Download the AdventureWorks2025 database from Microsoft's official
+documentation.
+
+```text
+datasets/README.md
+```
+
+**Purpose:** Obtain the source database used by the project.
+
+---
+
+## Step 2 — Restore the Database
+
+Restore `AdventureWorks2025.bak` using **SQL Server Management Studio
+(SSMS)**.
+
+**Purpose:** Make the AdventureWorks2025 source database available in
+SQL Server.
+
+---
+
+## Step 3 — Initialize the Data Warehouse
+
+Run:
+
+```text
+scripts/init_database.sql
+```
+
+**Purpose:** Create the Data Warehouse database and required schemas.
+
+--- 
+
+## Step 4 — Create and Load the Bronze Layer
+
+Run the following scripts in SQL Server Management Studio (SSMS):
+
+```text
+scripts/bronze/ddl_bronze.sql
+scripts/bronze/procedure_load_bronze.sql
+```
+
+**Purpose:** Create the Bronze tables and load the source data into the raw
+layer.
+
+---
+
+## Step 5 — Create and Load the Silver Layer
+
+Run the following SQL scripts in order:
+
+```text
+scripts/silver/ddl_silver.sql
+scripts/silver/procedure_load_silver.sql
+```
+
+**Purpose:** Clean, standardize, integrate, and transform the Bronze layer
+data into business-oriented Silver tables.
+
+---
+
+## Step 6 — Create the Gold Layer
+
+Run:
+
+```text
+scripts/gold/ddl_gold.sql
+```
+
+**Purpose:** Create the business-ready Gold dimension and fact views used for
+analytics and Power BI reporting.
+
+---
+
+## Step 7 — Run Data Quality Checks
+
+Run the following SQL scripts:
+
+```text
+tests/quality_checks_silver.sql
+tests/quality_checks_gold.sql
+```
+
+**Purpose:** Validate the quality, consistency, and reliability of the
+transformed data before using it for analysis and reporting.
+
+---
+
+## Step 8 — Run Exploratory Data Analysis
+
+Run the following SQL script:
+
+```text
+scripts/analysis/exploratory_data_analysis.sql
+```
+
+**Purpose:** Analyze the Gold layer to identify business trends, KPIs,
+patterns, and insights across Sales, Customer, Product & Inventory,
+Procurement, and HR.
+
+---
+
+## Step 9 — Open the Power BI Report
+
+Open the Power BI report:
+
+```text
+powerbi/AdventureWorks_BI_Report.pbix
+```
+
+**Purpose:** Connect the report to the SQL Server Data Warehouse, refresh the
+data, and view the final interactive dashboards.
+
+---
+
+# 📂 Repository Structure
 
 ```text
 sql-data-warehouse-project/
