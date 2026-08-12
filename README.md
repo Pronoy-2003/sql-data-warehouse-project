@@ -849,7 +849,7 @@ This project is licensed under the [MIT License](LICENSE). You are free to use, 
 ## 👤 About Me
 
 Hi! I'm **Pronoy Pryunkush Sonowal**, a data enthusiast focused on building practical
-projects in **Data Analytics, Data Engineering, SQL, Data Warehousing, and
+projects in **Data Analytics, SQL, Data Warehousing, and
 Business Intelligence**.
 
 This project was developed to demonstrate an end-to-end data analytics
